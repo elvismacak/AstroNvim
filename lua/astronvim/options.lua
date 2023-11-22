@@ -28,7 +28,7 @@ local options = astronvim.user_opts("options", {
     number = true, -- show numberline
     preserveindent = true, -- preserve indent structure as much as possible
     pumheight = 10, -- height of the pop up menu
-    relativenumber = true, -- show relative numberline
+    relativenumber = false, -- show relative numberline
     shiftwidth = 2, -- number of space inserted for indentation
     showmode = false, -- disable showing modes in command line
     showtabline = 2, -- always display tabline
@@ -46,7 +46,7 @@ local options = astronvim.user_opts("options", {
     writebackup = false, -- disable making a backup before overwriting a file
   },
   g = {
-    mapleader = " ", -- set leader key
+    mapleader = ",", -- set leader key
     maplocalleader = ",", -- set default local leader key
     -- AstroNvim specific global options
     max_file = { size = 1024 * 100, lines = 10000 }, -- set global limits for large files

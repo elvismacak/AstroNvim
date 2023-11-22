@@ -122,30 +122,18 @@ end
 maps.n["]t"] = { function() vim.cmd.tabnext() end, desc = "Next tab" }
 maps.n["[t"] = { function() vim.cmd.tabprevious() end, desc = "Previous tab" }
 
--- Alpha
-if is_available "alpha-nvim" then
-  maps.n["<leader>h"] = {
-    function()
-      local wins = vim.api.nvim_tabpage_list_wins(0)
-      if #wins > 1 and vim.api.nvim_get_option_value("filetype", { win = wins[1] }) == "neo-tree" then
-        vim.fn.win_gotoid(wins[2]) -- go to non-neo-tree window to toggle alpha
-      end
-      require("alpha").start(false, require("alpha").default_config)
-    end,
-    desc = "Home Screen",
-  }
-end
-
 -- Comment
 if is_available "Comment.nvim" then
   maps.n["<leader>/"] = {
     function() require("Comment.api").toggle.linewise.count(vim.v.count > 0 and vim.v.count or 1) end,
     desc = "Toggle comment line",
   }
+  maps.n["<F4>"] = maps.n["<leader>/"]
   maps.v["<leader>/"] = {
     "<esc><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
     desc = "Toggle comment for selection",
   }
+  maps.v["<F4>"] = maps.v["<leader>/"]
 end
 
 -- GitSigns
@@ -164,9 +152,30 @@ if is_available "gitsigns.nvim" then
   maps.n["<leader>gd"] = { function() require("gitsigns").diffthis() end, desc = "View Git diff" }
 end
 
+-- Template
+if is_available "template.nvim" then
+  maps.n["<F1>"] = {
+    function()
+      if vim.bo.filetype == "go" then
+        vim.cmd.Template "go"
+      elseif vim.bo.filetype == "java" then
+        vim.cmd.Template "java"
+      end
+    end,
+    desc = "which_key_ignore",
+  }
+end
+
+-- CodeRunner
+if is_available "code_runner.nvim" then
+  maps.n["<F8>"] = { "<cmd>RunFile float<cr>", desc = "which_key_ignore" }
+end
+
+
 -- NeoTree
 if is_available "neo-tree.nvim" then
-  maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "Toggle Explorer" }
+  maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "which_key_ignore" }
+  maps.n["<F2>"] = maps.n["<leader>e"]
   maps.n["<leader>o"] = {
     function()
       if vim.bo.filetype == "neo-tree" then
@@ -175,7 +184,7 @@ if is_available "neo-tree.nvim" then
         vim.cmd.Neotree "focus"
       end
     end,
-    desc = "Toggle Explorer Focus",
+    desc = "which_key_ignore",
   }
 end
 
@@ -233,6 +242,7 @@ end
 if is_available "aerial.nvim" then
   maps.n["<leader>l"] = sections.l
   maps.n["<leader>lS"] = { function() require("aerial").toggle() end, desc = "Symbols outline" }
+  maps.n["<F3>"] = maps.n["<leader>lS"]
 end
 
 -- Telescope
@@ -278,9 +288,14 @@ if is_available "telescope.nvim" then
     desc = "Find AstroNvim config files",
   }
   maps.n["<leader>fb"] = { function() require("telescope.builtin").buffers() end, desc = "Find buffers" }
+  maps.n["<SPACE>"] = maps.n["<leader>fb"]
+  maps.n["<leader>1"] = maps.n["<leader>fb"]
   maps.n["<leader>fc"] = { function() require("telescope.builtin").grep_string() end, desc = "Find word under cursor" }
+  maps.n["<leader>3"] = maps.n["<leader>fc"]
   maps.n["<leader>fC"] = { function() require("telescope.builtin").commands() end, desc = "Find commands" }
   maps.n["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Find files" }
+  maps.n["<leader><SPACE>"] = maps.n["<leader>ff"]
+  maps.n["<leader>2"] = maps.n["<leader>ff"]
   maps.n["<leader>fF"] = {
     function() require("telescope.builtin").find_files { hidden = true, no_ignore = true } end,
     desc = "Find all files",
@@ -297,6 +312,7 @@ if is_available "telescope.nvim" then
   maps.n["<leader>ft"] =
     { function() require("telescope.builtin").colorscheme { enable_preview = true } end, desc = "Find themes" }
   maps.n["<leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
+  maps.n["<leader>4"] = maps.n["<leader>fw"]
   maps.n["<leader>fW"] = {
     function()
       require("telescope.builtin").live_grep {
@@ -348,7 +364,7 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" }
   maps.n["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
-  maps.n["<F7>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" }
+  maps.n["<F7>"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "Toggle terminal" } -- 调整为非弹窗模式
   maps.t["<F7>"] = maps.n["<F7>"]
   maps.n["<C-'>"] = maps.n["<F7>"] -- requires terminal that supports binding <C-'>
   maps.t["<C-'>"] = maps.n["<F7>"] -- requires terminal that supports binding <C-'>

@@ -23,6 +23,8 @@ return {
         },
         mappings = {
           i = {
+            ["<C-u>"] = false,  -- 清空prompt
+            ["<c-d>"] = actions.delete_buffer + actions.move_to_top,  -- 删除buffer
             ["<C-n>"] = actions.cycle_history_next,
             ["<C-p>"] = actions.cycle_history_prev,
             ["<C-j>"] = actions.move_selection_next,
